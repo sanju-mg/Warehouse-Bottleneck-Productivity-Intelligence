@@ -1,0 +1,29 @@
+# Python / Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Data files (Exclude large raw CSVs from git commit)
+data/raw/*.csv
+!data/raw/README.md
+data/cleaned/*.csv
+data/processed/analytics/*.csv
+data/processed/eda/*.png
+
+# System / IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+.env
+
+# Power BI binary files (if any created locally)
+*.pbix
+*.pbit
