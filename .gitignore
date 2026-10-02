@@ -4,26 +4,36 @@ __pycache__/
 *$py.class
 *.so
 .Python
+
+# Virtual environments
 env/
 venv/
 ENV/
-.venv
+.venv/
 
-# Data files (Exclude large raw CSVs from git commit)
+# Environment / secrets
+.env
+*.log
+
+# Large/raw data files
 data/raw/*.csv
 !data/raw/README.md
+
+# Generated / processed data
 data/cleaned/*.csv
 data/processed/analytics/*.csv
+
+# Generated EDA images
 data/processed/eda/*.png
 
-# System / IDE files
+# System files
 .DS_Store
 Thumbs.db
+
+# IDE files
 .vscode/
 .idea/
-*.log
-.env
 
-# Power BI binary files (if any created locally)
-*.pbix
-*.pbit
+# Temporary files
+*.tmp
+*.temp
