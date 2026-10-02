@@ -1,200 +1,741 @@
-# Warehouse Bottleneck & Productivity Intelligence — Supply Chain Fulfillment & Logistics Bottleneck Analytics
+# 📦 Warehouse Bottleneck & Productivity Intelligence
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](python/)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-orange?logo=mysql)](sql/)
-[![Power BI](https://img.shields.io/badge/Power_BI-Star_Schema-yellow?logo=powerbi)](powerbi/)
-[![Status](https://img.shields.io/badge/Pipeline-Validated_100%25-brightgreen)](#final-validation)
+### An End-to-End Supply Chain Analytics Project Using Python, SQL, Machine Learning, and Power BI
 
-A complete, production-grade **Supply Chain Fulfillment & Logistics Bottleneck Analytics** portfolio project built upon the Kaggle [DataCo Smart Supply Chain Dataset](https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis).
-
-> [!IMPORTANT]
-> **Operational Positioning & Scope Transparency**:  
-> This project focuses strictly on **Supply Chain Fulfillment & Logistics Bottleneck Analytics** using empirical order-item transit data. Because the source dataset does not contain internal warehouse worker timestamps (e.g., picking, packing, forklift queue times), this project **does NOT fabricate synthetic employee productivity metrics**. All operational insights are derived strictly from measurable logistics SLAs, transit durations, carrier modes, and geographic performance.
-
----
-
-## 1. Business Problem & Executive Objective
-
-Global supply chains face severe delivery SLA degradation due to fulfillment bottlenecks, unrealistic dispatch promise dates, and regional logistics friction. In this logistics network:
-
-- **54.83% of all order items** suffer from late delivery.
-- Over **$20.12M in gross revenue** (54.74% of total sales) is exposed to fulfillment delay risk.
-- Premium shipping modes (`First Class`, `Second Class`) experience catastrophic late delivery rates (**95.32%** and **76.63%** respectively) due to unrealistic 1-day and 2-day SLA targets.
-
-This project delivers an end-to-end analytics pipeline — spanning **Python data profiling & feature engineering**, **SQL analytical queries**, and a **Power BI 7-Page Enterprise Dashboard** — to pinpoint bottlenecks, evaluate carrier performance, and establish management intervention priorities.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/Power_BI-Dashboard-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI">
+  <img src="https://img.shields.io/badge/Scikit--learn-Machine_Learning-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" alt="Scikit-learn">
+  <img src="https://img.shields.io/badge/Status-Portfolio_Project-2ECC71?style=for-the-badge" alt="Project Status">
+</p>
 
 ---
 
-## 2. Dataset Overview & Data Grain
+## 📌 Overview
 
-- **Primary Source**: Kaggle DataCo Smart Supply Chain Dataset (`DataCoSupplyChainDataset.csv`)
-- **Raw File Size**: `91.47 MB`
-- **Total Records (Order Lines)**: `180,519`
-- **Distinct Orders**: `65,752`
-- **Distinct Customers**: `20,652`
-- **Distinct Products**: `118`
-- **Date Scope**: `2015-01-01` to `2018-01-31` (37 months)
+**Warehouse Bottleneck & Productivity Intelligence** is an end-to-end supply chain analytics project that transforms raw logistics data into actionable business insights.
 
-### Data Grain Specification
+The project analyzes historical supply chain operations to identify delivery bottlenecks, investigate shipping delays, measure regional performance, and understand operational inefficiencies.
 
-> [!CAUTION]
-> The dataset grain is **ORDER-ITEM LINE LEVEL** (`order_item_id`).  
-> A single customer order (`order_id`) can contain multiple line item records (average of ~2.74 lines per order).  
-> - **Total Orders** MUST be calculated using `DISTINCTCOUNT(order_id)` or `COUNT(DISTINCT order_id)`.
-> - **Total Order Items** is calculated using `COUNT(order_item_id)` or `COUNTROWS()`.
+It combines **Python, SQL, Machine Learning, and Power BI** to build a complete analytics workflow, from raw data preprocessing to interactive business intelligence dashboards.
+
+The project also incorporates anomaly detection and forecasting to explore unusual shipping behavior and future operational trends.
+
+### 🎯 Objectives
+
+* Analyze historical supply chain and delivery performance.
+* Identify bottlenecks and patterns in shipping delays.
+* Measure on-time and late delivery rates.
+* Compare shipping performance across regions and product categories.
+* Identify unusual shipping records using machine learning.
+* Forecast monthly order volume and delivery performance.
+* Build an interactive Power BI dashboard.
+* Support data-driven operational decision-making.
 
 ---
 
-## 3. Data Architecture & End-to-End Pipeline
+## 🛠️ Tech Stack
 
+| Technology       | Application                           |
+| ---------------- | ------------------------------------- |
+| Python           | Data analysis and automation          |
+| Pandas           | Data cleaning and manipulation        |
+| NumPy            | Numerical calculations                |
+| Matplotlib       | Data visualization                    |
+| Seaborn          | Statistical visualization             |
+| Scikit-learn     | Machine learning                      |
+| Isolation Forest | Anomaly detection                     |
+| Ridge Regression | Forecasting                           |
+| MySQL            | Relational database                   |
+| SQL              | Business analysis and KPI calculation |
+| Power BI         | Interactive dashboards                |
+| Git & GitHub     | Version control and project hosting   |
+
+---
+
+## 📊 Dataset
+
+**Dataset:** DataCo Smart Supply Chain Dataset
+
+The project uses historical supply chain data containing order information, shipping details, product categories, customer information, and delivery performance.
+
+| Dataset Attribute | Value                       |
+| ----------------- | --------------------------- |
+| Dataset           | DataCo Smart Supply Chain   |
+| Total order items | 180,519                     |
+| Total orders      | 65,752                      |
+| Historical period | January 2015 – January 2018 |
+| Domain            | Supply Chain and Logistics  |
+| Data format       | CSV                         |
+
+### Important Dataset Features
+
+* Order ID
+* Order Item ID
+* Order Date
+* Shipping Date
+* Scheduled Shipping Days
+* Actual Shipping Days
+* Shipping Mode
+* Product Category
+* Department
+* Customer Segment
+* Market
+* Country
+* Region
+* Sales
+* Profit
+* Quantity
+* Delivery Status
+
+The dataset is used to investigate historical delivery performance and identify patterns associated with shipping delays.
+
+**Note:** This is historical supply chain data, not a live warehouse tracking dataset.
+
+---
+
+## 🏗️ Project Architecture
+
+The project follows a complete data analytics pipeline.
+
+```text
+                 RAW DATASET
+                      |
+                      ▼
+               DATA PROFILING
+                  (Python)
+                      |
+                      ▼
+                DATA CLEANING
+                  (Pandas)
+                      |
+                      ▼
+             FEATURE ENGINEERING
+                  (Python)
+                      |
+                      ▼
+          EXPLORATORY DATA ANALYSIS
+                      |
+                      ▼
+              DATA VISUALIZATION
+                (20 Charts)
+                      |
+                      ▼
+             ADVANCED ANALYTICS
+                      |
+             ┌────────┴────────┐
+             ▼                 ▼
+       ANOMALY DETECTION    FORECASTING
+       Isolation Forest   Ridge Regression
+             |                 |
+             └────────┬────────┘
+                      ▼
+                MYSQL DATABASE
+                      |
+                      ▼
+                 SQL ANALYSIS
+                      |
+                      ▼
+               POWER BI REPORT
+                      |
+                      ▼
+               BUSINESS INSIGHTS
 ```
-[Raw Kaggle Dataset (180,519 rows × 53 cols)]
-                     │
-                     ▼
-[Stage 1: Python Profiling & Quality Audit] (python/01_data_profiling.py)
-                     │
-                     ▼
-[Stage 2: Python Data Cleaning & Standardization] (python/02_data_cleaning.py)
-                     │
-                     ▼
-[Stage 3: Feature Engineering] (python/03_feature_engineering.py)
-                     │ → dataco_featured.csv (180,519 rows × 79 cols)
-                     │
-        ┌────────────┴──────────────────────────┐
-        ▼                                       ▼
-[Stage 4: Advanced Python Analytics & EDA]   [Stage 5: MySQL Database Analytics Layer]
-(04_eda.py, 05_advanced_analytics.py)        (sql/schema.sql, sql/01-07 Queries)
-        │                                       │
-        └────────────┬──────────────────────────┘
-                     ▼
-[Stage 6: Power BI Enterprise Star Schema]
-(Fact_OrderItems + 5 Conformed Dimensions, DAX Measures, 7 Dashboard Pages)
+
+---
+
+## 📁 Project Structure
+
+```text
+Warehouse-Bottleneck-Productivity-Intelligence/
+│
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── data/
+│   │
+│   ├── raw/
+│   │   ├── DataCoSupplyChainDataset.csv
+│   │   ├── DescriptionDataCoSupplyChain.csv
+│   │   ├── README.md
+│   │   └── tokenized_access_logs.csv
+│   │
+│   ├── cleaned/
+│   │   └── dataco_cleaned.csv
+│   │
+│   └── processed/
+│       │
+│       ├── analytics/
+│       │   ├── dataco_anomalies.csv
+│       │   ├── dataco_featured.csv
+│       │   ├── dataco_forecasts.csv
+│       │   └── dataco_monthly_analytics.csv
+│       │
+│       └── eda/
+│           ├── 01_order_volume_trend.png
+│           ├── 02_delivery_performance.png
+│           ├── 03_shipping_delay_analysis.png
+│           └── ... (20 EDA charts)
+│
+├── python/
+│   ├── 01_data_profiling.py
+│   ├── 02_data_cleaning.py
+│   ├── 03_feature_engineering.py
+│   ├── 04_eda.py
+│   ├── 05_advanced_analytics.py
+│   └── 06_load_mysql.py
+│
+├── sql/
+│   ├── schema.sql
+│   ├── 01_operations_overview.sql
+│   ├── 02_delivery_bottleneck.sql
+│   ├── 03_shipping_mode_analysis.sql
+│   ├── 04_geographic_performance.sql
+│   ├── 05_product_category_analysis.sql
+│   ├── 06_time_analysis.sql
+│   └── 07_management_priorities.sql
+│
+└── powerbi/
+    └── Warehouse_Bottleneck_Productivity_Intelligence.pbix
 ```
 
 ---
 
-## 4. Key Performance Indicators (KPIs)
+# 🔄 Project Workflow
 
-| KPI | Empirical Value | Formula / Definition |
-|---|---|---|
-| **Total Orders** | `65,752` | `DISTINCTCOUNT(Fact_OrderItems[order_id])` |
-| **Total Order Items** | `180,519` | `COUNT(Fact_OrderItems[order_item_id])` |
-| **Total Quantity Shipped** | `384,079 units` | `SUM(Fact_OrderItems[order_item_quantity])` |
-| **Total Sales** | `$36,784,735.01` | `SUM(Fact_OrderItems[sales])` |
-| **Total Profit** | `$3,966,902.97` | `SUM(Fact_OrderItems[order_profit_per_order])` |
-| **Late Delivery Rate** | `54.83%` | `COUNT(Late Items) / Total Order Items` |
-| **On-Time Delivery Rate** | `17.84%` | `COUNT(On-Time Items) / Total Order Items` |
-| **Early Delivery Rate** | `23.04%` | `COUNT(Early Items) / Total Order Items` |
-| **Average Actual Shipping Days** | `3.50 days` | `AVERAGE(Fact_OrderItems[actual_shipping_days])` |
-| **Average Scheduled Shipping Days** | `2.93 days` | `AVERAGE(Fact_OrderItems[scheduled_shipping_days])` |
-| **Average Shipping Variance (SLA Gap)** | `+0.57 days` | `Actual Shipping Days - Scheduled Shipping Days` |
-| **Delayed Sales Exposure** | `$20,126,395.27` | Total revenue tied to late shipments |
+## 1. Data Profiling
+
+The first stage examines the raw dataset to understand its structure and quality.
+
+### Activities
+
+* Inspect dataset dimensions.
+* Identify column names and data types.
+* Analyze missing values.
+* Examine duplicate records.
+* Generate descriptive statistics.
+* Investigate unique values.
+* Identify potential data quality issues.
+
+**Objective:** Understand the dataset before cleaning and analysis.
+
+**Script:** `python/01_data_profiling.py`
+
+## 2. Data Cleaning
+
+Python and Pandas are used to prepare the dataset for analysis.
+
+### Activities
+
+* Remove uninformative columns.
+* Handle missing values.
+* Standardize column names.
+* Convert date columns to datetime format.
+* Prepare numerical and categorical columns.
+* Save the cleaned dataset.
+
+**Output:** `data/cleaned/dataco_cleaned.csv`
+
+**Script:** `python/02_data_cleaning.py`
+
+## 3. Feature Engineering
+
+Feature engineering creates additional variables to measure operational performance.
+
+### Engineered Features
+
+| Feature                | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `shipping_delay_days`  | Difference between actual and scheduled shipping days |
+| `late_delivery_flag`   | Identifies late deliveries                            |
+| `on_time_flag`         | Identifies on-time deliveries                         |
+| `early_delivery_flag`  | Identifies early deliveries                           |
+| `profit_margin`        | Profit divided by sales                               |
+| `revenue_per_unit`     | Revenue generated per unit                            |
+| `high_delay_flag`      | Identifies delays of at least two days                |
+| `critical_delay_flag`  | Identifies delays of at least three days              |
+| `category_delay_rate`  | Historical late-delivery rate by category             |
+| `region_delay_rate`    | Historical late-delivery rate by region               |
+| `composite_risk_score` | Combines selected operational risk indicators         |
+
+These features help analyze delivery delays, profitability, and operational risk.
+
+**Output:** `data/processed/analytics/dataco_featured.csv`
+
+**Script:** `python/03_feature_engineering.py`
+
+**Note:** Historical category and region delay rates are intended for descriptive analysis. If used for predictive modeling, they must be calculated without using information from the prediction target or future records.
+
+## 4. Exploratory Data Analysis (EDA)
+
+Exploratory Data Analysis is used to discover trends, relationships, and unusual patterns in the dataset.
+
+The project generates 20 visualizations using Python.
+
+### EDA Categories
+
+* Monthly order volume
+* Delivery performance
+* Shipping delay distribution
+* Shipping mode comparison
+* Geographic performance
+* Country-level performance
+* Product category analysis
+* Department performance
+* Customer segment analysis
+* Sales and profit analysis
+* Monthly delivery trends
+* Operational risk distribution
+
+**Output:** `data/processed/eda/`
+
+**Script:** `python/04_eda.py`
+
+## 5. Advanced Analytics
+
+The project uses machine learning and statistical techniques to investigate operational behavior.
+
+### A. Anomaly Detection Using Isolation Forest
+
+Isolation Forest is an unsupervised machine learning algorithm used to identify unusual observations.
+
+The model analyzes selected features, including:
+
+* Shipping time
+* Shipping delay
+* Sales
+* Quantity
+
+The contamination parameter is set to `0.02`, configuring the model to flag approximately 2% of records as anomalies.
+
+**Business applications:**
+
+* Identify unusual shipping records.
+* Highlight shipments that require investigation.
+* Support operational monitoring.
+* Explore unusual patterns in shipping behavior.
+
+Anomalies are not necessarily errors or confirmed failures. They require further investigation.
+
+### B. Statistical Anomaly Detection Using Z-Score
+
+Z-score analysis identifies observations that are unusually far from the mean.
+
+The project flags shipping delays with an absolute Z-score greater than 3.
+
+This provides a statistical method for detecting extreme shipping delays.
+
+### C. Forecasting Using Ridge Regression
+
+Ridge Regression is used to explore future operational trends.
+
+The project forecasts:
+
+* Monthly order-item volume
+* Monthly late-delivery volume
+* Monthly late-delivery rate
+
+The model generates a six-month forecast using a sequential time index.
+
+**Business applications:**
+
+* Explore future order-volume trends.
+* Estimate potential late-delivery volumes.
+* Support preliminary operational planning.
+
+The forecasts are exploratory and should be evaluated against a time-based test set before being used for actual business decisions.
+
+**Outputs:**
+
+* `data/processed/analytics/dataco_anomalies.csv`
+* `data/processed/analytics/dataco_forecasts.csv`
+* `data/processed/analytics/dataco_monthly_analytics.csv`
+
+**Script:** `python/05_advanced_analytics.py`
 
 ---
 
-## 5. Python Data & Advanced Analytics Layer
+# 🗄️ SQL Analysis
 
-The `python/` directory contains 5 modular, standalone scripts:
+MySQL is used to store and analyze the processed supply chain data.
 
-1. [`01_data_profiling.py`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/python/01_data_profiling.py): Inspects raw dataset shape, data types, missing values, and entity counts. Writes [`docs/data_profile.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/data_profile.md) and [`docs/data_dictionary.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/data_dictionary.md).
-2. [`02_data_cleaning.py`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/python/02_data_cleaning.py): Drops 4 uninformative constant columns, handles null zipcodes/names, standardizes column names to snake_case, and writes [`docs/data_quality_report.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/data_quality_report.md).
-3. [`03_feature_engineering.py`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/python/03_feature_engineering.py): Computes 30 operational features including `shipping_delay_days`, `late_delivery_flag`, `is_weekend`, `profit_margin`, `revenue_per_unit`, `high_delay_flag`, `category_delay_rate`, `region_delay_rate`, and `composite_risk_score`.
-4. [`04_eda.py`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/python/04_eda.py): Generates 20 publication-grade EDA charts saved in `data/processed/eda/`.
-5. [`05_advanced_analytics.py`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/python/05_advanced_analytics.py): Runs Isolation Forest anomaly detection (3,531 anomalies detected), Z-score outlier screening, and Ridge regression time-series forecasting.
+The project includes a relational database schema and seven SQL analysis scripts.
 
----
+| SQL File                           | Purpose                                             |
+| ---------------------------------- | --------------------------------------------------- |
+| `schema.sql`                       | Creates the database tables and schema              |
+| `01_operations_overview.sql`       | Calculates overall operational KPIs                 |
+| `02_delivery_bottleneck.sql`       | Analyzes delivery delays and bottlenecks            |
+| `03_shipping_mode_analysis.sql`    | Compares shipping mode performance                  |
+| `04_geographic_performance.sql`    | Analyzes country and regional performance           |
+| `05_product_category_analysis.sql` | Investigates product category and department delays |
+| `06_time_analysis.sql`             | Examines monthly and weekday trends                 |
+| `07_management_priorities.sql`     | Identifies areas for management investigation       |
 
-## 6. SQL Analytics Suite
+### SQL Concepts Used
 
-The `sql/` directory provides a full database schema and 7 analytics scripts:
+* SELECT and WHERE
+* GROUP BY
+* ORDER BY
+* Aggregate functions
+* CASE statements
+* Subqueries
+* Common Table Expressions (CTEs)
+* Window functions
+* DENSE_RANK()
+* Conditional aggregation
+* Indexing
 
-- [`schema.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/schema.sql): MySQL DDL defining `dataco_fulfillment` table with indexes on high-frequency analytics columns.
-- [`01_operations_overview.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/01_operations_overview.sql): Macro KPI summaries, customer segment breakdowns, and market performance.
-- [`02_delivery_bottleneck.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/02_delivery_bottleneck.sql): SLA status distribution, delay severity bins, and quantity-vs-delay analysis.
-- [`03_shipping_mode_analysis.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/03_shipping_mode_analysis.sql): Carrier SLA failure ranking and delivery status matrix.
-- [`04_geographic_performance.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/04_geographic_performance.sql): 23-region SLA ranking, top problematic destination countries, and city bottlenecks.
-- [`05_product_category_analysis.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/05_product_category_analysis.sql): Department and category operational volume vs delay rates.
-- [`06_time_analysis.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/06_time_analysis.sql): Monthly trends with 3-month rolling averages, weekday load, and hour-of-day order pressure.
-- [`07_management_priorities.sql`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/sql/07_management_priorities.sql): Management priority risk ranking matrix across regions and product categories.
+### Business Applications
 
----
+SQL queries are used to:
 
-## 7. Power BI Dashboard Architecture & Specifications
+* Calculate operational KPIs.
+* Compare shipping modes.
+* Identify regions with high late-delivery rates.
+* Analyze product categories.
+* Examine historical delivery trends.
+* Prioritize operational areas for further investigation.
 
-The `powerbi/` directory defines an enterprise Star Schema model and 7-page dashboard design:
-
-- [`data_model.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/data_model.md): Star schema specification featuring `Fact_OrderItems` surrounded by `Dim_Date`, `Dim_Customer`, `Dim_Product`, `Dim_Geography`, and `Dim_ShippingMode`.
-- [`dax_measures.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/dax_measures.md): 36 production DAX measures (AOV, Late Delivery %, SLA Gap, Composite Risk Index, and scalar-safe `CONCATENATEX` ranking measures).
-- [`dashboard_design.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/dashboard_design.md): 7-Page visual blueprint (Executive Overview, Bottleneck Intelligence, Shipping Performance, Geographic Operations, Product & Category Operations, Time & Demand Intelligence, Management Action Center).
-- [`power_query_steps.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/power_query_steps.md): M-code transformation steps for importing and modeling the data in Power BI Desktop.
-- [`business_insights.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/business_insights.md): Strategic recommendations for operations management.
-
----
-
-## 8. Major Business Insights & Strategic Recommendations
-
-1. **Recalibrate First Class & Second Class Promise Dates**:
-   - `First Class` scheduled target of 1 day fails in **95.32%** of cases because actual transit takes 2.00 days.
-   - *Action*: Update OMS/ERP promise date targets to 2 days for First Class and 4 days for Second Class to align customer expectations with physical transit capabilities.
-2. **Mitigate $20.12M Revenue Exposure**:
-   - Over 54% of gross sales are associated with delayed deliveries.
-   - *Action*: Introduce priority fulfillment routing for high-value orders (`sales >= $300`) to protect core revenue streams.
-3. **Target High-Volume Regional Bottlenecks**:
-   - `Central America` (27,198 items, 56.40% late) and `Western Europe` (27,009 items, 54.51% late) represent over 30,000 delayed order items.
-   - *Action*: Expand regional 3PL logistics hub capacity and pre-clear customs for top destination countries.
+**SQL directory:** `sql/`
 
 ---
 
-## 9. Project Scope & Limitations
+# 📊 Power BI Dashboard
 
-As detailed in [`docs/limitations.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/limitations.md), this dataset does **NOT** contain internal warehouse micro-operational timestamps:
-- No picking start/end times or worker IDs.
-- No packing line throughput or forklift utilization rates.
-- No aisle/zone warehouse layout maps.
+The project includes an interactive Power BI dashboard for exploring supply chain performance.
 
-All metrics are positioned strictly around **Supply Chain Fulfillment & Logistics Bottleneck Analytics**.
+**Dashboard file:**
+
+`powerbi/Warehouse_Bottleneck_Productivity_Intelligence.pbix`
+
+### Dashboard Pages
+
+| Page                             | Description                                   |
+| -------------------------------- | --------------------------------------------- |
+| 1. Executive Overview            | Overall supply chain KPIs and performance     |
+| 2. Bottleneck Intelligence       | Delivery delays and operational bottlenecks   |
+| 3. Shipping Performance          | Shipping mode comparisons                     |
+| 4. Geographic Operations         | Regional and country-level performance        |
+| 5. Product & Category Operations | Product and department analysis               |
+| 6. Time & Demand Intelligence    | Historical trends and forecasts               |
+| 7. Management Action Center      | Operational risk and investigation priorities |
+
+### Key Performance Indicators
+
+* Total Orders
+* Total Order Items
+* Total Sales
+* Total Profit
+* Late Delivery Rate
+* On-Time Delivery Rate
+* Average Shipping Time
+* Average Shipping Variance
+
+The dashboard is designed to help users explore performance across different operational dimensions.
+
+Open the PBIX file using Microsoft Power BI Desktop.
 
 ---
 
-## 10. How to Reproduce & Execute the Project
+# 📈 Key Performance Indicators
 
-### Prerequisites
-- Python 3.10+
-- MySQL 8.0+ (optional, for SQL analytics layer)
-- Power BI Desktop (for visual dashboard creation)
+The following are the reported results from the project's historical dataset.
 
-### Step 1: Clone Repository & Setup Environment
+| KPI                                    |          Value |
+| -------------------------------------- | -------------: |
+| Total Orders                           |         65,752 |
+| Total Order Items                      |        180,519 |
+| Total Sales                            | $36,784,735.01 |
+| Total Profit                           |  $3,966,902.97 |
+| Late Delivery Rate                     |         54.83% |
+| On-Time Delivery Rate                  |         17.84% |
+| Average Actual Shipping Time           |      3.50 days |
+| Average Scheduled Shipping Time        |      2.93 days |
+| Average Shipping Variance              |      0.57 days |
+| Revenue Associated with Late Shipments | $20,126,395.27 |
+
+These metrics describe the historical dataset and should not be interpreted as current warehouse performance.
+
+---
+
+# 💡 Business Questions
+
+This project is designed to answer the following questions:
+
+1. What percentage of shipments are delivered late?
+2. Which shipping modes have higher late-delivery rates?
+3. Which regions experience more delivery delays?
+4. Which product categories are associated with frequent delays?
+5. How does delivery performance change over time?
+6. How much revenue is associated with late shipments?
+7. Which shipments exhibit unusual behavior?
+8. What are the historical monthly order trends?
+9. Which operational areas should management investigate?
+10. How can historical data support delivery planning?
+
+---
+
+# ⚙️ Installation and Setup
+
+Follow these steps to run the project locally.
+
+## Prerequisites
+
+Install the following software:
+
+* Python 3.10 or later
+* MySQL Server
+* MySQL Workbench (optional)
+* Microsoft Power BI Desktop
+* Visual Studio Code (recommended)
+* Git
+
+## Step 1: Clone the Repository
+
 ```bash
-git clone https://github.com/your-username/Warehouse-Bottleneck-Productivity-Intelligence.git
+git clone https://github.com/sanju/Warehouse-Bottleneck-Productivity-Intelligence.git
+```
+
+Navigate to the project directory:
+
+```bash
 cd Warehouse-Bottleneck-Productivity-Intelligence
+```
+
+## Step 2: Create a Virtual Environment
+
+```bash
 python -m venv venv
+```
+
+Activate the virtual environment on Windows:
+
+```bash
 venv\Scripts\activate
+```
+
+On macOS or Linux:
+
+```bash
+source venv/bin/activate
+```
+
+## Step 3: Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Step 2: Obtain Raw Dataset
-Download `DataCoSupplyChainDataset.csv` from [Kaggle](https://www.kaggle.com/datasets/shashwatwork/dataco-smart-supply-chain-for-big-data-analysis) and place it in `data/raw/`.
+## Step 4: Prepare the Dataset
 
-### Step 3: Run Python Analytics Pipeline
+Ensure the original dataset is available at:
+
+```text
+data/raw/DataCoSupplyChainDataset.csv
+```
+
+If you downloaded the dataset separately, place it in this directory.
+
+Update the file paths in the Python scripts if necessary.
+
+## Step 5: Run the Python Pipeline
+
+Execute the scripts in the following order:
+
+**1. Data profiling**
+
 ```bash
 python python/01_data_profiling.py
+```
+
+**2. Data cleaning**
+
+```bash
 python python/02_data_cleaning.py
+```
+
+**3. Feature engineering**
+
+```bash
 python python/03_feature_engineering.py
+```
+
+**4. Exploratory data analysis**
+
+```bash
 python python/04_eda.py
+```
+
+**5. Advanced analytics**
+
+```bash
 python python/05_advanced_analytics.py
 ```
 
-### Step 4: Run SQL Schema & Analytics (Optional)
-Import `sql/schema.sql` into MySQL and execute scripts `01` through `07`.
+**6. Load data into MySQL**
 
-### Step 5: Power BI Implementation
-Follow [`powerbi/power_query_steps.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/power_query_steps.md) and [`powerbi/dashboard_design.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/powerbi/dashboard_design.md) to load `dataco_featured.csv` into Power BI Desktop.
+```bash
+python python/06_load_mysql.py
+```
+
+Run each script sequentially and check its output before proceeding.
+
+The scripts may require local path or database configuration adjustments.
 
 ---
 
-## 11. Project Audit & Final Validation
+# 🐬 MySQL Configuration
 
-This repository has passed a 100% rigorous validation audit:
-- [x] [`docs/project_audit.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/project_audit.md): Complete audit of row counts, column types, and missing values.
-- [x] [`docs/business_logic.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/business_logic.md): Canonical specification of late delivery rules and SLA logic.
-- [x] [`docs/final_validation_report.md`](file:///g:/Warehouse-Bottleneck-Productivity-Intelligence/docs/final_validation_report.md): Final PASS sign-off across all 11 validation categories.
+Start your MySQL Server and create the database.
+
+```sql
+CREATE DATABASE warehouse_analytics;
+```
+
+Select the database:
+
+```sql
+USE warehouse_analytics;
+```
+
+Execute the schema file:
+
+```text
+sql/schema.sql
+```
+
+Configure the database connection in `python/06_load_mysql.py`.
+
+For security, use environment variables to store database credentials instead of committing passwords to GitHub.
+
+Example configuration:
+
+```text
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=warehouse_analytics
+```
+
+After loading the data, execute the SQL analysis files in the `sql/` directory.
+
+---
+
+# 📂 Project Outputs
+
+| Output            | Location                    | Description                          |
+| ----------------- | --------------------------- | ------------------------------------ |
+| Cleaned dataset   | `data/cleaned/`             | Cleaned supply chain data            |
+| Featured dataset  | `data/processed/analytics/` | Engineered analytical features       |
+| Anomaly results   | `data/processed/analytics/` | Records flagged by anomaly detection |
+| Forecast results  | `data/processed/analytics/` | Exploratory monthly forecasts        |
+| Monthly analytics | `data/processed/analytics/` | Aggregated monthly metrics           |
+| EDA charts        | `data/processed/eda/`       | 20 data visualizations               |
+| SQL scripts       | `sql/`                      | Database schema and business queries |
+| Power BI report   | `powerbi/`                  | Interactive dashboard                |
+
+---
+
+# 🔐 Data Security and Reproducibility
+
+* Do not commit database passwords or other credentials.
+* Use environment variables for sensitive configuration.
+* Keep the raw dataset unchanged.
+* Document the source and license of the dataset.
+* Validate data before loading it into MySQL.
+* Avoid destructive database operations without backups.
+* Use consistent paths for reproducible execution.
+
+---
+
+# ⚠️ Limitations
+
+Although the project includes multiple analytics techniques, it has several limitations:
+
+1. **Historical data:** The dataset covers January 2015 to January 2018 and does not represent live operations.
+2. **Productivity measurement:** The project focuses on shipping and delivery performance rather than direct employee productivity.
+3. **Anomaly detection:** Anomaly detection identifies unusual records, not confirmed operational failures.
+4. **Forecasting:** Ridge Regression uses a simple time index and may not capture seasonal patterns.
+5. **Risk scoring:** Composite risk scores depend on analyst-defined features and weights.
+6. **Predictive modeling:** Historical delivery statistics must be calculated carefully to avoid target leakage.
+7. **Business validation:** The results should be validated against actual operational data before making real-world decisions.
+
+---
+
+# 🚀 Future Improvements
+
+Potential future developments include:
+
+* Implementing ARIMA or other time-series forecasting methods.
+* Comparing forecasts using MAE, RMSE, and MAPE.
+* Building a supervised model to predict late deliveries.
+* Improving risk scores using validated operational outcomes.
+* Adding automated data quality checks.
+* Developing a scheduled ETL pipeline.
+* Deploying the Power BI dashboard to Power BI Service.
+* Integrating live shipment tracking data.
+* Implementing automated alerts for unusual delivery delays.
+* Optimizing SQL queries and dashboard performance.
+
+---
+
+# 🎓 Skills Demonstrated
+
+This project demonstrates practical experience in:
+
+* Python programming
+* Data cleaning and preprocessing
+* Exploratory data analysis
+* Feature engineering
+* SQL and MySQL
+* Statistical analysis
+* Machine learning
+* Anomaly detection
+* Regression-based forecasting
+* Data visualization
+* Business intelligence
+* KPI development
+* Supply chain analytics
+* Business problem-solving
+
+---
+
+# 👨‍💻 Author
+
+**Sanju**
+
+Computer Science and Engineering Student
+
+**Areas of Interest:**
+
+* Data Analytics
+* Data Science
+* Machine Learning
+* Business Intelligence
+* Python
+* SQL
+
+**GitHub:** [sanju](https://github.com/sanju)
+
+**Project Repository:** [Warehouse Bottleneck & Productivity Intelligence](https://github.com/sanju/Warehouse-Bottleneck-Productivity-Intelligence)
+
+---
+
+# 📜 License
+
+This project is developed for educational and portfolio purposes.
+
+The original dataset may have separate licensing and usage conditions. Refer to its original source before redistributing it.
+
+---
+
+<p align="center">
+  <b>Warehouse Bottleneck & Productivity Intelligence</b>
+  <br>
+  Turning Supply Chain Data into Business Insights
+  <br><br>
+  ⭐ If you find this project useful, consider starring the repository!
+</p>
